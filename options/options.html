@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>YT Declutter — Options</title>
+  <style>
+    body {
+      font: 14px/1.5 system-ui, -apple-system, sans-serif;
+      margin: 0;
+      padding: 16px 20px;
+      min-width: 320px;
+      color: #1a1a1a;
+      background: #fff;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { color: #eee; background: #202124; }
+      .hint { color: #9aa0a6; }
+    }
+    h1 { font-size: 15px; margin: 0 0 12px; }
+    label {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      margin: 10px 0;
+      cursor: pointer;
+    }
+    input[type="checkbox"] { margin-top: 3px; }
+    .hint { display: block; font-size: 12px; color: #666; }
+  </style>
+</head>
+<body>
+  <h1>YT Declutter</h1>
+
+  <label>
+    <input type="checkbox" id="hideShorts">
+    <span>
+      Hide Shorts
+      <span class="hint">Removes shelves, tiles, sidebar entries and the channel tab. Applies instantly to open tabs.</span>
+    </span>
+  </label>
+
+  <label>
+    <input type="checkbox" id="redirectHome">
+    <span>
+      Redirect home to Subscriptions
+      <span class="hint">youtube.com/ loads your Subscriptions feed instead of the algorithmic home page.</span>
+    </span>
+  </label>
+
+  <script src="options.js"></script>
+</body>
+</html>

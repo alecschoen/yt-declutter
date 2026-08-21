@@ -1,0 +1,75 @@
+{
+  // Chrome's extension manifest parser accepts // comments (Chromium's
+  // JSON_PARSE_CHROMIUM_EXTENSIONS mode), so these are safe when loading
+  // unpacked. Strip them if another tool chokes on the file.
+  "manifest_version": 3,
+  "name": "YT Declutter",
+  "version": "1.0.0",
+  "description": "Hides YouTube Shorts and redirects the homepage to your Subscriptions feed.",
+
+  "permissions": [
+    // "storage": persist the two options-page checkboxes via
+    // chrome.storage.sync so settings follow the user's Chrome profile.
+    "storage",
+    // "declarativeNetRequest": needed to ship the static redirect ruleset
+    // (rules.json) and to enable/disable it at runtime from the options
+    // toggle. We deliberately do NOT request declarativeNetRequestFeedback
+    // (debug-only) or webRequest (would allow reading traffic).
+    "declarativeNetRequest"
+  ],
+
+  "host_permissions": [
+    // Redirect actions in declarativeNetRequest only fire on hosts the
+    // extension has host permissions for. Limited to youtube.com; the rule
+    // itself further restricts matching to the exact root path "/".
+    "*://www.youtube.com/*",
+    "*://youtube.com/*"
+  ],
+
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        // Static ruleset: evaluated in the network layer before the request
+        // is sent, so the redirect happens with no flash of the home feed.
+        // Enabled by default; background.js syncs this with the stored
+        // "redirectHome" setting.
+        "id": "redirect_home",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  },
+
+  "background": {
+    // Tiny service worker whose only job is to keep the redirect ruleset's
+    // enabled state in sync with chrome.storage.sync (needed so a setting
+    // synced from another machine is applied, and so the options page stays
+    // dumb). It registers three listeners and does nothing else.
+    "service_worker": "background.js"
+  },
+
+  "content_scripts": [
+    {
+      // Runs only on YouTube (this grant comes from "matches", not a broad
+      // host permission). The CSS does all the hiding; toggle.js only flips
+      // one class on <html> based on the stored setting — no DOM watching.
+      // redirect-home.js covers in-page (SPA) navigation to "/" — logo and
+      // Home clicks — which never hit the network, so DNR can't see them.
+      "matches": ["*://www.youtube.com/*"],
+      "css": ["content/hide-shorts.css"],
+      "js": ["content/toggle.js", "content/redirect-home.js"],
+      "run_at": "document_start"
+    }
+  ],
+
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": false
+  },
+
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

@@ -1,0 +1,4 @@
+# Chrome writes this into the folder when the extension is loaded unpacked
+# (compiled declarativeNetRequest ruleset cache) — not source.
+_metadata/
+.DS_Store

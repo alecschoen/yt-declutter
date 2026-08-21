@@ -1,0 +1,79 @@
+/*
+ * yt-declutter — Shorts hiding rules.
+ *
+ * Every rule is gated on the `yt-declutter-hide-shorts` class that
+ * content/toggle.js puts on <html>. Untick "Hide Shorts" in the options page
+ * and the class is removed, so none of these selectors apply — no dead CSS
+ * left matching.
+ *
+ * Pure CSS means this survives infinite scroll and YouTube's SPA navigation
+ * automatically: new nodes match the moment they're inserted.
+ *
+ * Strategy: prefer structural `:has(a[href^="/shorts/"])` selectors over
+ * YouTube's own attribute flags — hrefs change far less often than tag/attr
+ * names. Where YouTube gives us a cheap flag (e.g. [is-shorts]) we use it as
+ * an *additional* fast path, never the only one.
+ *
+ * If Shorts reappear somewhere, see "Troubleshooting" in the README: find the
+ * new wrapper element in devtools and add one selector to the right group.
+ */
+
+/* ------------------------------------------------------------------ */
+/* 1. Shorts shelves (home feed, subscriptions feed, search, watch)   */
+/* ------------------------------------------------------------------ */
+
+/* Home/Subscriptions shelf — YouTube's own flag (fast path) */
+html.yt-declutter-hide-shorts ytd-rich-shelf-renderer[is-shorts],
+/* Home/Subscriptions shelf — structural fallback: any full-width rich
+   section whose tiles link to /shorts/ */
+html.yt-declutter-hide-shorts ytd-rich-section-renderer:has(a[href^="/shorts/"]),
+/* Shorts shelf on search results and below/beside the watch page */
+html.yt-declutter-hide-shorts ytd-reel-shelf-renderer,
+/* Newer "view model" shelf markup seen on search/home */
+html.yt-declutter-hide-shorts grid-shelf-view-model:has(a[href^="/shorts/"]) {
+  display: none !important;
+}
+
+/* ------------------------------------------------------------------ */
+/* 2. Individual Shorts tiles (any grid, list, or search result)      */
+/* ------------------------------------------------------------------ */
+
+/* Home / Subscriptions grid tile */
+html.yt-declutter-hide-shorts ytd-rich-item-renderer:has(a[href^="/shorts/"]),
+/* Older channel/subscriptions grid tile */
+html.yt-declutter-hide-shorts ytd-grid-video-renderer:has(a[href^="/shorts/"]),
+/* Search result / list-style row */
+html.yt-declutter-hide-shorts ytd-video-renderer:has(a[href^="/shorts/"]),
+/* Compact tile in the watch-page sidebar */
+html.yt-declutter-hide-shorts ytd-compact-video-renderer:has(a[href^="/shorts/"]),
+/* Item inside a reel shelf (belt-and-braces; the shelf is hidden above) */
+html.yt-declutter-hide-shorts ytd-reel-item-renderer,
+/* Newer "lockup view model" tile markup */
+html.yt-declutter-hide-shorts yt-lockup-view-model:has(a[href^="/shorts/"]) {
+  display: none !important;
+}
+
+/* ------------------------------------------------------------------ */
+/* 3. Sidebar navigation entries                                      */
+/* ------------------------------------------------------------------ */
+
+/* Full (expanded) guide sidebar — the Shorts link's href is "/shorts",
+   sometimes without a trailing slash, so match the bare prefix here */
+html.yt-declutter-hide-shorts ytd-guide-entry-renderer:has(a[href^="/shorts"]),
+/* Collapsed mini sidebar */
+html.yt-declutter-hide-shorts ytd-mini-guide-entry-renderer:has(a[href^="/shorts"]) {
+  display: none !important;
+}
+
+/* ------------------------------------------------------------------ */
+/* 4. Channel pages — the "Shorts" tab                                */
+/* ------------------------------------------------------------------ */
+
+/* Current channel-tab markup has no href on the tab element, so we have to
+   use YouTube's tab-title attribute. NOTE: this one is locale-dependent
+   (matches the English label); adjust the string for other UI languages. */
+html.yt-declutter-hide-shorts yt-tab-shape[tab-title="Shorts"],
+/* Older tab markup, which did carry an href */
+html.yt-declutter-hide-shorts tp-yt-paper-tab:has(a[href*="/shorts"]) {
+  display: none !important;
+}
