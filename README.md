@@ -39,6 +39,18 @@ Note: `manifest.json` contains `//` comments justifying each permission.
 Chrome's extension manifest parser accepts these; if you run the file through
 a strict JSON tool, strip the comments first.
 
+## Packing for distribution
+
+```bash
+./pack.sh
+```
+
+Produces `dist/yt-declutter-v<version>.zip` — the upload format for the
+Chrome Web Store / Edge Add-ons, with the manifest's `//` comments stripped so
+strict JSON validators accept it. Note that modern Chrome refuses self-packed
+`.crx` files outside the Web Store, so for direct installs the options are
+load-unpacked (above) or unzipping this archive and loading that folder.
+
 ## File map
 
 | File | Purpose |

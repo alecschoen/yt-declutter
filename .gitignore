@@ -2,3 +2,6 @@
 # (compiled declarativeNetRequest ruleset cache) — not source.
 _metadata/
 .DS_Store
+
+# Packed builds (regenerate with ./pack.sh)
+dist/
