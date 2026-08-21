@@ -3,9 +3,13 @@
   // JSON_PARSE_CHROMIUM_EXTENSIONS mode), so these are safe when loading
   // unpacked. Strip them if another tool chokes on the file.
   "manifest_version": 3,
-  "name": "YT Declutter",
+  // "for YouTube" naming (rather than leading with the brand) follows Chrome
+  // Web Store trademark policy — names implying YouTube affiliation get
+  // rejected at review.
+  "name": "Declutter for YouTube",
+  "short_name": "Declutter",
   "version": "1.0.0",
-  "description": "Hides YouTube Shorts and redirects the homepage to your Subscriptions feed.",
+  "description": "Hides Shorts everywhere and opens your Subscriptions feed instead of the algorithmic homepage. No data collected.",
 
   "permissions": [
     // "storage": persist the two options-page checkboxes via
