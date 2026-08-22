@@ -1,4 +1,8 @@
-# YT Declutter
+# Declutter for YouTube
+
+**[Install from the Chrome Web Store](https://chromewebstore.google.com/detail/declutter-for-youtube/pckcneiokfkjbmabfneldlcgpdmkginn)**
+
+![Declutter for YouTube — hides Shorts and opens Subscriptions instead of the algorithmic homepage](store-assets/screenshot-1280x800.png)
 
 A tiny Manifest V3 Chrome extension that:
 
@@ -24,7 +28,10 @@ Both features can be toggled on the options page and persist via
 
 No build step, no dependencies. Plain HTML/CSS/JS.
 
-## Load unpacked
+## Load unpacked (development)
+
+The easiest install is the [Chrome Web Store link](https://chromewebstore.google.com/detail/declutter-for-youtube/pckcneiokfkjbmabfneldlcgpdmkginn)
+above. To hack on the source instead:
 
 1. Open `chrome://extensions` in Chrome.
 2. Turn on **Developer mode** (toggle, top right).
